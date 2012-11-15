@@ -3,8 +3,6 @@ package com.arithmeticpath;
 import java.util.ArrayList;
 import java.util.Dictionary;
 
-import com.ditloids.R;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -16,7 +14,7 @@ public class Game {
 	// Количество уровней сложности в кампании
 	private int countRanges = 0;
 	
-	//Индексов последнего пройденного в текущей кампании уровня 
+	//Индекс последнего пройденного в текущей кампании уровня 
 	private int lastDoneLevelIndex = -1;
 	
 	// Массив уровней в кампаниях по рангам сложностей (длина массива countRanges)
@@ -38,6 +36,9 @@ public class Game {
     public Game(Context context) {
     	Resources res = context.getResources();
     	String[] levels = res.getStringArray(R.array.levels);
+    	String prefsName = res.getString(R.string.prefs_name);
+        settings = context.getSharedPreferences(prefsName, 0);
+    	
     }
     
     // Сохраняем игру (в кампании сохраняется текущий уровень)
@@ -55,7 +56,7 @@ public class Game {
     }
     
     // Загружаем игру (в кампании загружается текущий уровень)
-    public void LoadGame() {
+    public void LoadGame() throws Exception {
         if( currentRange < countRanges && currentRange > -1 ) {   	
         	String game = settings.getString("game" + Integer.toString(currentRange) , "");
         	lastDoneLevelIndex = settings.getInt("lastDoneLevelIndex" + Integer.toString(currentRange) , -1);
@@ -72,7 +73,8 @@ public class Game {
         	lastDoneLevelIndex = -1;
         	currentLevel = -1;
         	if (game.equals(""))
-        		gameGraph.setGraph(levels.get(currentRange).get(0));
+        		// Нужно поставить правильные цвета
+        		gameGraph = new GameGraph(3, 3, 0, 0, 0);
         	else
         		gameGraph.setGraph(game);
         };
@@ -88,7 +90,7 @@ public class Game {
     		return false;
     }
     
-    // Устанавливаем текущий уровень на текущем сложности
+    // Устанавливаем текущий игровой уровень на текущем уровне сложности
     public boolean setCurrentLevel(int currentLevel) {
     	if ( currentRange < levels.size() &&
     		 currentRange > -1 &&

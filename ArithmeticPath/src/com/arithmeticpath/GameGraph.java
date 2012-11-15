@@ -4,15 +4,16 @@ import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 
 public class GameGraph {
 	// Все координаты в долях высоты и ширины канвы (то есть от 0 до 1)
     // Массив узлов
 	private ArrayList<GameNode> nodes = null;
-	// Список смежности узлов
-	private ArrayList<ArrayList<Integer>> neighbours = null;
 	// Список индексов пройденных узлов
 	private ArrayList<Integer> path = null;
+	// Список индексов пройденных узлов в правильном ответе
+	private ArrayList<Integer> rightpath = null;
 	// Размеры игрового поля в фишках
 	int sizex = 0;
 	int sizey = 0;
@@ -22,19 +23,18 @@ public class GameGraph {
 	// Цвет занятого узла
 	int busyNodeColor = Color.argb(0, 0, 0, 0);
 	// Цвет шрифта
-	int fontColor = 0;
+	int fontColor = Color.argb(0, 0, 0, 0);
+	
 	
 	// Конструктор по умолчанию
 	public GameGraph() {
 		this.nodes = new ArrayList<GameNode>();
-	    this.neighbours  = new ArrayList<ArrayList<Integer>>();
 	    this.path = new ArrayList<Integer>();	
 	}
 	
 	// Конструктор с параметрами
 	public GameGraph(int sizex, int sizey, int freeNodeColor, int busyNodeColor, int fontColor) throws Exception {
 		this.nodes = new ArrayList<GameNode>();
-	    this.neighbours  = new ArrayList<ArrayList<Integer>>();
 	    this.path = new ArrayList<Integer>();
 	    this.busyNodeColor = busyNodeColor;
 	    this.freeNodeColor = freeNodeColor;
@@ -75,72 +75,11 @@ public class GameGraph {
 	            };
 
 	        }
-	    // Заполняем список соседей игрового графа
-	    addNodeInPath(0);
-	    for (int i = 0; i < sizey; i++)
-	        for (int j = 0; j < sizex; j++) {
-	            if (i == 0 && j == 0) {
-	                addNeighbour(((i + 1) * sizex + j), (i * sizex + j));
-	                addNeighbour((i * sizex + j + 1), (i * sizex + j));
-	                continue;
-	            }
-	            if (i == (sizey - 1) && j == 0) {
-	                addNeighbour(((i - 1) * sizex + j), (i * sizex + j));
-	                addNeighbour((i * sizex + j + 1), (i * sizex + j));
-	                continue;
-	            }
-	            if (i == 0 && j == (sizex - 1)) {
-	                addNeighbour(((i + 1) * sizex + j), (i * sizex + j));
-	                addNeighbour((i * sizex + j - 1), (i * sizex + j));
-	                continue;
-	            }
-	            if (i == (sizey - 1) && j == (sizex - 1)) {
-	                addNeighbour(((i - 1) * sizex + j), (i * sizex + j));
-	                addNeighbour((i * sizex + j - 1), (i * sizex + j));
-	                continue;
-	            }
-	            if (i == 0) {
-	                addNeighbour(((i + 1) * sizex + j), (i * sizex + j));
-	                addNeighbour((i * sizex + j - 1), (i * sizex + j));
-	                addNeighbour((i * sizex + j + 1), (i * sizex + j));
-	                continue;
-	            }
-	            if (i == (sizey - 1)) {
-	                addNeighbour(((i - 1) * sizex + j), (i * sizex + j));
-	                addNeighbour((i * sizex + j - 1), (i * sizex + j));
-	                addNeighbour((i * sizex + j + 1), (i * sizex + j));
-	                continue;
-	            }
-	            if (j == 0) {
-	                addNeighbour(((i - 1) * sizex + j), (i * sizex + j));
-	                addNeighbour(((i + 1) * sizex + j), (i * sizex + j));
-	                addNeighbour((i * sizex + j + 1), (i * sizex + j));
-	                continue;
-	            }
-	            if (j == (sizex - 1)) {
-	                addNeighbour(((i - 1) * sizex + j), (i * sizex + j));
-	                addNeighbour(((i + 1) * sizex + j), (i * sizex + j));
-	                addNeighbour((i * sizex + j - 1), (i * sizex + j));
-	                continue;
-	            };
-	            addNeighbour(((i - 1) * sizex + j), (i * sizex + j));
-	            addNeighbour(((i + 1) * sizex + j), (i * sizex + j));
-	            addNeighbour((i * sizex + j - 1), (i * sizex + j));
-	            addNeighbour((i * sizex + j + 1), (i * sizex + j));
-	        }
 	}
 	
     // Добавляем узел node
     public void addNode(GameNode node) {
     	this.nodes.add(node);
-    	this.neighbours.add(new ArrayList<Integer>());
-    }
-    
-    // Добавить соседа с индексом nei к узлу с индексом nodeIndex
-    public void addNeighbour(int nei, int nodeIndex) {
-        if ((this.nodes.get(nodeIndex).getType() == 0 && this.nodes.get(nei).getType() > 0) ||
-            (this.nodes.get(nodeIndex).getType() > 0 && this.nodes.get(nei).getType() == 0))
-            this.neighbours.get(nodeIndex).add(nei);
     }
     
     // Добавить узел в путь
@@ -161,14 +100,6 @@ public class GameGraph {
             mas.add(nodeIndex);
             this.path = mas;
             return 0;
-        }
-        // Если узел - сосед справа или внизу - заносим
-        ArrayList<Integer> nei = this.neighbours.get(this.path.get(this.path.size() - 1));
-        for (int i = 0; i < nei.size(); i++) {
-            if (nei.get(i) == nodeIndex) {
-                this.path.add(nodeIndex);
-                return 0;
-            }
         }
         // Если узел на одной вертикали внизу или горизонтали справа
         // - заносим все узлы этой горизонтали или вертикали
@@ -270,15 +201,90 @@ public class GameGraph {
         return this.path.get(this.path.size() - 1);
     }
     
+    // Устанавливаем текущую гамму отображения
+    public void SetGamma(int freeNodeColor, int busyNodeColor, int fontColor) {
+	    this.busyNodeColor = busyNodeColor;
+	    this.freeNodeColor = freeNodeColor;
+	    this.fontColor = fontColor;
+    }
+    
+    // Устанавливаем размер
+    public void SetSize(int sizex, int sizey) throws Exception {
+	    if (sizex % 2 == 0 || sizey % 2 == 0) {
+	    	Log.e("altavista", "Illegal size of gameGraph");
+	    	throw new Exception();
+	    }
+	    else {
+		    this.sizex = sizex;
+		    this.sizey = sizey;
+	    }
+    }
+    
     // Выдаем строковое представление графа
+    // Строка вида <sizex>_<sizey>_<данные по форме <тип узла>_<данные узла>>_<номера узлов в текущем пройденном пути>
     public String getGraph() {
     	String ret = "";
-    	
+    	ret += Integer.toString(sizex) + "_";
+    	ret += Integer.toString(sizey) + "_";
+    	for(int i = 0; i < sizey; i++)
+    		for(int j = 0; j < sizex; j++) {
+    			ret += Integer.toString(nodes.get(sizex * i + j).getType()) + "_";
+    			ret += nodes.get(sizex * i + j).toString() + "_";
+    		};
+    	for(int i = 0; i < path.size() - 1; i++)
+    		ret += Integer.toString(path.get(i)) + "_";
+    	ret += Integer.toString(path.get(path.size() - 1));
     	return ret;
     }
     
     // Загружаем граф из строкового представления
-    public void setGraph(String str) {
-    	
+    public void setGraph(String str) throws Exception {
+    	try {
+	    	String[] strdata = str.split("_");
+	    	nodes.clear();
+	    	path.clear();
+		    sizex = Integer.parseInt(strdata[0]);
+		    sizey = Integer.parseInt(strdata[1]);
+		    // Шаги
+		    double stepx = 1.0 / sizex;
+		    double stepy = 1.0 / sizey;
+		    double line = 0.01;
+		    double width = stepx - line;
+		    double height = stepy - line;
+		    int k = 1;
+		    // Заполняем список узлов игрового графа
+		    for (int i = 0; i < sizey; i++)
+		        for (int j = 0; j < sizex; j++) {
+		        	k += 1;
+		        	int type = Integer.parseInt(strdata[k]);
+		        	k += 1;
+		        	int data = Integer.parseInt(strdata[k]);	        	
+		            if (type == 0) {
+		                GameNode node = new GameNode(0, data, stepx / 2 + j * stepx, stepy / 2 + i * stepy);
+			            node.setSizeX(width);
+			            node.setSizeY(height);
+			            addNode(node);
+		            }
+		            else {
+		                GameNode node = new GameNode(type, 0, stepx / 2 + j * stepx, stepx / 2 + i * stepy);
+			            node.setSizeX(width);
+			            node.setSizeY(height);
+			            addNode(node);
+		            };
+	
+		        }
+		    // Заполняем список пути
+		    k += 1;
+		    for( int i = k; k < strdata.length; i++ ) {
+		    	int p = Integer.parseInt(strdata[i]);
+		    	path.add(p);
+		    }
+    	}
+    	catch (Exception ex) {
+    		Log.e("altavista", ex.getMessage());
+    		throw ex;
+    	}
     }
+    
+    
 }
