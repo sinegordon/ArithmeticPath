@@ -24,7 +24,14 @@ public class GameGraph {
 	// Цвет шрифта
 	int fontColor = 0;
 	
-	// Конструктор
+	// Конструктор по умолчанию
+	public GameGraph() {
+		this.nodes = new ArrayList<GameNode>();
+	    this.neighbours  = new ArrayList<ArrayList<Integer>>();
+	    this.path = new ArrayList<Integer>();	
+	}
+	
+	// Конструктор с параметрами
 	public GameGraph(int sizex, int sizey, int freeNodeColor, int busyNodeColor, int fontColor) throws Exception {
 		this.nodes = new ArrayList<GameNode>();
 	    this.neighbours  = new ArrayList<ArrayList<Integer>>();
@@ -261,5 +268,17 @@ public class GameGraph {
         if (this.path.size() == 0)
             return -1;
         return this.path.get(this.path.size() - 1);
-    }	
+    }
+    
+    // Выдаем строковое представление графа
+    public String getGraph() {
+    	String ret = "";
+    	
+    	return ret;
+    }
+    
+    // Загружаем граф из строкового представления
+    public void setGraph(String str) {
+    	
+    }
 }
