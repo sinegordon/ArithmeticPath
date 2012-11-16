@@ -6,6 +6,7 @@ import java.util.Dictionary;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 
 public class Game {
 	// Игровой объект
@@ -30,15 +31,39 @@ public class Game {
     private int currentRange = -1;
     
     // Текущий индекс игрового уровня на уровне сложности
-    private int currentLevel = -1;    
+    private int currentLevel = -1;
+    
+	// Цвета фонов узлов на текущем уровне
+	// Цвет свободного узла
+    int freeNodeColor = Color.argb(0, 0, 0, 0);
+	
+	// Цвет занятого узла
+	int busyNodeColor = Color.argb(0, 0, 0, 0);
+	
+	// Цвет шрифта на текущем уровне
+	int fontColor = Color.argb(0, 0, 0, 0);
     
     // Конструктор игры
     public Game(Context context) {
     	Resources res = context.getResources();
-    	String[] levels = res.getStringArray(R.array.levels);
+    	String[] reslevels = res.getStringArray(R.array.levels);
     	String prefsName = res.getString(R.string.prefs_name);
         settings = context.getSharedPreferences(prefsName, 0);
-    	
+        this.levels = new ArrayList<ArrayList<String>>();
+        // Определяем количество уровней сложности
+        int ind = reslevels[reslevels.length-1].indexOf("_");
+        countRanges = Integer.parseInt(reslevels[reslevels.length-1].substring(0, ind-1)) + 1;
+        // Создаем пустые массивы под игровые уровни на уровнях сложности
+        for (int i = 0; i < countRanges; i++)
+        	levels.add(new ArrayList<String>());
+        // Заполняем массивы игровых уровней на уровнях сложности
+        for(int i = 0; i < reslevels.length; i++) {
+        	ind = reslevels[i].indexOf("_");
+        	int r = Integer.parseInt(reslevels[reslevels.length-1].substring(0, ind-1));
+        	String str = reslevels[reslevels.length-1].substring(ind + 1);
+        	levels.get(ind).add(str);
+        }
+        gameGraph = new GameGraph();
     }
     
     // Сохраняем игру (в кампании сохраняется текущий уровень)
@@ -67,16 +92,18 @@ public class Game {
         	}
         	else
         		gameGraph.setGraph(game);
+        	gameGraph.SetGamma(freeNodeColor, busyNodeColor, fontColor);
         };
         if (currentRange == -1) {
         	String game = settings.getString("game", "");
         	lastDoneLevelIndex = -1;
         	currentLevel = -1;
         	if (game.equals(""))
-        		// Нужно поставить правильные цвета
-        		gameGraph = new GameGraph(3, 3, 0, 0, 0);
-        	else
+        		gameGraph = new GameGraph(3, 3, freeNodeColor, busyNodeColor, fontColor);
+        	else {
         		gameGraph.setGraph(game);
+        		gameGraph.SetGamma(freeNodeColor, busyNodeColor, fontColor);
+        	}
         };
     }
        
@@ -90,7 +117,7 @@ public class Game {
     		return false;
     }
     
-    // Устанавливаем текущий игровой уровень на текущем уровне сложности
+    // Устанавливаем текущий индекс игрового уровня на текущем уровне сложности
     public boolean setCurrentLevel(int currentLevel) {
     	if ( currentRange < levels.size() &&
     		 currentRange > -1 &&

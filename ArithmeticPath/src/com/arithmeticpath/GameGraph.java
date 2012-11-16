@@ -29,7 +29,8 @@ public class GameGraph {
 	// Конструктор по умолчанию
 	public GameGraph() {
 		this.nodes = new ArrayList<GameNode>();
-	    this.path = new ArrayList<Integer>();	
+	    this.path = new ArrayList<Integer>();
+	    this.path.add(0);
 	}
 	
 	// Конструктор с параметрами
@@ -44,7 +45,9 @@ public class GameGraph {
 	    else {
 		    this.sizex = sizex;
 		    this.sizey = sizey;
-	    }    
+	    }
+	    // Добавляем в путь узел номер ноль (левый верхний)
+	    this.path.add(0);
 	    // Шаги
 	    double stepx = 1.0 / sizex;
 	    double stepy = 1.0 / sizey;
@@ -138,6 +141,24 @@ public class GameGraph {
         }
         return res;
     }
+    
+    // Правильный результат
+    public int rightResult() {
+        int res = 0;
+        if (this.rightpath.size() == 0)
+            return Integer.MAX_VALUE;
+        else
+            res = this.nodes.get(0).getData();
+        for (int i = 2; i < this.rightpath.size(); i += 2) {
+            if (this.nodes.get(this.rightpath.get(i - 1)).getType() == 1)
+                res += this.nodes.get(this.rightpath.get(i)).getData();
+            if (this.nodes.get(this.rightpath.get(i - 1)).getType() == 2)
+                res -= this.nodes.get(this.rightpath.get(i)).getData();
+            if (this.nodes.get(this.rightpath.get(i - 1)).getType() == 3)
+                res *= this.nodes.get(this.rightpath.get(i)).getData();
+        }
+        return res;
+    }
 
     // Текущее строковое представление
     public String toString() {
@@ -221,7 +242,7 @@ public class GameGraph {
     }
     
     // Выдаем строковое представление графа
-    // Строка вида <sizex>_<sizey>_<данные по форме <тип узла>_<данные узла>>_<номера узлов в текущем пройденном пути>
+    // Строка вида <sizex>_<sizey>_<данные по форме <тип узла>_<данные узла>>_<номера узлов в правильном пути>_<номера узлов в текущем пройденном пути>
     public String getGraph() {
     	String ret = "";
     	ret += Integer.toString(sizex) + "_";
@@ -231,6 +252,8 @@ public class GameGraph {
     			ret += Integer.toString(nodes.get(sizex * i + j).getType()) + "_";
     			ret += nodes.get(sizex * i + j).toString() + "_";
     		};
+    	for(int i = 0; i < rightpath.size(); i++)
+    		ret += Integer.toString(rightpath.get(i)) + "_";
     	for(int i = 0; i < path.size() - 1; i++)
     		ret += Integer.toString(path.get(i)) + "_";
     	ret += Integer.toString(path.get(path.size() - 1));
@@ -273,9 +296,16 @@ public class GameGraph {
 		            };
 	
 		        }
+		    // Заполняем список правильного пути
+		    k += 1;
+		    for( int i = k; i < k + sizex + sizey; i++ ) {
+		    	k += 1;
+		    	int p = Integer.parseInt(strdata[i]);
+		    	rightpath.add(p);
+		    }
 		    // Заполняем список пути
 		    k += 1;
-		    for( int i = k; k < strdata.length; i++ ) {
+		    for( int i = k; i < strdata.length; i++ ) {
 		    	int p = Integer.parseInt(strdata[i]);
 		    	path.add(p);
 		    }
@@ -285,6 +315,4 @@ public class GameGraph {
     		throw ex;
     	}
     }
-    
-    
 }
