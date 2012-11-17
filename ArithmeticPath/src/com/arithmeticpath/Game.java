@@ -128,6 +128,16 @@ public class Game {
     	else
     		return false;
     }
+    
+    // Возвращаем текущий уровень сложности
+    public int getCurrentRange() {
+    	return currentRange;
+    }
+
+    // Возвращаем текущий индекс игрового уровня на текущем уровене сложности
+    public int getCurrentLevel() {
+    	return currentLevel;
+    }
 
 
 }
