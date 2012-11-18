@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"    
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/skyblue">    
+    
+    <Button
+        android:id="@+id/btn1"
+        android:layout_centerHorizontal="true"        
+        android:layout_height="32dp"
+        android:layout_width="253dp"        
+        android:layout_marginTop="40dp"        
+        android:background="@drawable/select_game" />     
+    
+	<RelativeLayout 
+  		android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:gravity="center"
+    	android:layout_marginTop="40dp">
+        
+    <Button android:id="@+id/StartButton"       
+        android:layout_height="151dp" 
+        android:layout_width="253dp"  
+        android:background="@drawable/school" />
+
+    <Button android:id="@+id/SettingsButton"     
+        android:layout_height="151dp" 
+        android:layout_width="253dp" 
+        android:layout_marginTop="160dp"		
+        android:background="@drawable/university" />  
+	</RelativeLayout>
+	
+	<RelativeLayout 
+  		android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:gravity="bottom">  
+	<Button
+        android:id="@+id/btn2"
+        android:layout_centerHorizontal="true"        
+        android:layout_height="23dp"
+        android:layout_width="257dp"
+    	android:layout_marginBottom="10dp"                      
+        android:background="@drawable/back"/>
+</RelativeLayout>	
+  	
+</RelativeLayout>
