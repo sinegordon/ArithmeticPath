@@ -1,6 +1,11 @@
 package com.arithmeticpath;
 
+
+import java.util.Date;
+import java.util.Random;
+
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -76,15 +81,17 @@ public class GameNode {
 	    int yy = (int) Math.round(this.y * canvas.getHeight());
 	    int w = (int) Math.round(this.sizex * canvas.getWidth());
 	    int h = (int) Math.round(this.sizey * canvas.getHeight());
-	    Paint paint = new Paint();
+	    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	    paint.setStyle(Paint.Style.FILL);
-	    //canvas = view.getHolder().lockCanvas();
 	    paint.setColor(backColor);
 	    Rect rect = new Rect();
 	    rect.set(xx - w / 2, yy - h / 2, xx + w / 2, yy + h / 2);
 	    canvas.drawRect(rect, paint);
+	    paint.setStyle(Paint.Style.FILL_AND_STROKE);
+	    paint.setStrokeWidth(5);
 	    paint.setColor(fontColor);
-	    canvas.drawText(this.toString(), xx, yy, paint);
+	    paint.setTextSize(h/2);
+	    canvas.drawText(this.toString(), xx - w/5, yy + h/5, paint);
 	}
 	
 	public GameNode(int type, int data, double x, double y) {

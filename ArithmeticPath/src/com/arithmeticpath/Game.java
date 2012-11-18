@@ -6,9 +6,15 @@ import java.util.Dictionary;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
+import android.view.View;
 
 public class Game {
+	// Контекст приложения
+	private Context context = null; 
+	
 	// Игровой объект
 	private GameGraph gameGraph = null;
 	
@@ -40,11 +46,15 @@ public class Game {
 	// Цвет занятого узла
 	int busyNodeColor = Color.argb(0, 0, 0, 0);
 	
-	// Цвет шрифта на текущем уровне
-	int fontColor = Color.argb(0, 0, 0, 0);
-    
+	// Цвет шрифта свободной клетки на текущем уровне
+	int freeFontColor = Color.argb(0, 0, 0, 0);
+
+	// Цвет шрифта занятой клетки на текущем уровне
+	int busyFontColor = Color.argb(0, 0, 0, 0);
+
     // Конструктор игры
     public Game(Context context) {
+    	this.context = context;
     	Resources res = context.getResources();
     	String[] reslevels = res.getStringArray(R.array.levels);
     	String prefsName = res.getString(R.string.prefs_name);
@@ -52,16 +62,16 @@ public class Game {
         this.levels = new ArrayList<ArrayList<String>>();
         // Определяем количество уровней сложности
         int ind = reslevels[reslevels.length-1].indexOf("_");
-        countRanges = Integer.parseInt(reslevels[reslevels.length-1].substring(0, ind-1)) + 1;
+        countRanges = Integer.parseInt(reslevels[reslevels.length-1].substring(0, ind)) + 1;
         // Создаем пустые массивы под игровые уровни на уровнях сложности
         for (int i = 0; i < countRanges; i++)
         	levels.add(new ArrayList<String>());
         // Заполняем массивы игровых уровней на уровнях сложности
         for(int i = 0; i < reslevels.length; i++) {
         	ind = reslevels[i].indexOf("_");
-        	int r = Integer.parseInt(reslevels[reslevels.length-1].substring(0, ind-1));
-        	String str = reslevels[reslevels.length-1].substring(ind + 1);
-        	levels.get(ind).add(str);
+        	int r = Integer.parseInt(reslevels[i].substring(0, ind));
+        	String str = reslevels[i].substring(ind + 1);
+        	levels.get(r).add(str);
         }
         gameGraph = new GameGraph();
     }
@@ -88,21 +98,22 @@ public class Game {
         	currentLevel = settings.getInt("currentLevel" + Integer.toString(currentRange) , -1);
         	if (game.equals("")) {
         		currentLevel = 0;
-        		gameGraph.setGraph(levels.get(currentRange).get(0));
+        		String str = levels.get(currentRange).get(0);
+        		gameGraph.setGraph(str);
         	}
         	else
         		gameGraph.setGraph(game);
-        	gameGraph.SetGamma(freeNodeColor, busyNodeColor, fontColor);
+        	gameGraph.setGamma(freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
         };
         if (currentRange == -1) {
         	String game = settings.getString("game", "");
         	lastDoneLevelIndex = -1;
         	currentLevel = -1;
         	if (game.equals(""))
-        		gameGraph = new GameGraph(3, 3, freeNodeColor, busyNodeColor, fontColor);
+        		gameGraph = new GameGraph(3, 3, freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
         	else {
         		gameGraph.setGraph(game);
-        		gameGraph.SetGamma(freeNodeColor, busyNodeColor, fontColor);
+        		gameGraph.setGamma(freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
         	}
         };
     }
@@ -138,6 +149,48 @@ public class Game {
     public int getCurrentLevel() {
     	return currentLevel;
     }
+    
+    // Рисуем текущий уровень на канве
+    public void draw(Canvas canvas) throws Exception {
+    	try {
+    		gameGraph.draw(canvas);
+    	}
+    	catch (Exception e) {
+			Log.e("altavista", "Can't draw the game level!");
+			throw e;
+		}
+    }
+    
+    // Устанавливаем текущую гамму отображения
+    public void setGamma(int freeNodeColor, int busyNodeColor, int freeFontColor, int busyFontColor) {
+	    this.busyNodeColor = busyNodeColor;
+	    this.freeNodeColor = freeNodeColor;
+	    this.freeFontColor = freeFontColor;
+	    this.busyFontColor = busyFontColor;
+	    gameGraph.setGamma(freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
+    }
+    
+    // Делаем ход по клику мышкой в точку с координатами x, y
+    public void move(double x, double y) {
+    	int nodeIndex = gameGraph.getNodeIndexXY(x, y);
+    	gameGraph.addNodeInPath(nodeIndex);
+    }
+    
+    // Очистить прогресс
+    public void clearSettings() {
+    	SharedPreferences.Editor editor = settings.edit();
+    	editor.clear();
+    	editor.commit();
+    }
+    
+    // Необходимо набрать на текущем игровом уровне
+    public String needResult() {
+    	return Integer.toString(gameGraph.rightResult());
+    }
 
+    // Результат на данный момент на текущем игровом уровне
+    public String nowResult() {
+    	return gameGraph.toString();
+    }
 
 }
