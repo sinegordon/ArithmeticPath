@@ -22,24 +22,28 @@ public class GameGraph {
 	int freeNodeColor = Color.argb(0, 0, 0, 0);
 	// Цвет занятого узла
 	int busyNodeColor = Color.argb(0, 0, 0, 0);
-	// Цвет шрифта
-	int fontColor = Color.argb(0, 0, 0, 0);
+	// Цвет шрифта сободного узла
+	int freeFontColor = Color.argb(0, 0, 0, 0);
+	// Цвет шрифта занятого узла
+	int busyFontColor = Color.argb(0, 0, 0, 0);
 	
 	
 	// Конструктор по умолчанию
 	public GameGraph() {
 		this.nodes = new ArrayList<GameNode>();
 	    this.path = new ArrayList<Integer>();
-	    this.path.add(0);
+	    this.rightpath = new ArrayList<Integer>();
 	}
 	
 	// Конструктор с параметрами
-	public GameGraph(int sizex, int sizey, int freeNodeColor, int busyNodeColor, int fontColor) throws Exception {
+	public GameGraph(int sizex, int sizey, int freeNodeColor, int busyNodeColor, int freeFontColor, int busyFontColor) throws Exception {
 		this.nodes = new ArrayList<GameNode>();
 	    this.path = new ArrayList<Integer>();
+	    this.rightpath = new ArrayList<Integer>();
 	    this.busyNodeColor = busyNodeColor;
 	    this.freeNodeColor = freeNodeColor;
-	    this.fontColor = fontColor;
+	    this.freeFontColor = freeFontColor;
+	    this.busyFontColor = busyFontColor;
 	    if (sizex % 2 == 0 || sizey % 2 == 0)
 	    	throw new Exception();
 	    else {
@@ -193,10 +197,10 @@ public class GameGraph {
         // Рисуем узлы графа
         for (int i = 0; i < this.nodes.size(); i++) {
             if (inPath(i)) {
-                this.nodes.get(i).draw(canvas, this.busyNodeColor, this.fontColor);
+                this.nodes.get(i).draw(canvas, this.busyNodeColor, this.busyFontColor);
             }
             else
-                this.nodes.get(i).draw(canvas, this.freeNodeColor, this.fontColor);
+                this.nodes.get(i).draw(canvas, this.freeNodeColor, this.freeFontColor);
         }
     }
 
@@ -212,7 +216,6 @@ public class GameGraph {
     // Очищаем путь
     public void clearPath() {
         this.path.clear();
-        this.path.add(0);
     }
 
     // Выдаем последний индекс пути
@@ -223,14 +226,15 @@ public class GameGraph {
     }
     
     // Устанавливаем текущую гамму отображения
-    public void SetGamma(int freeNodeColor, int busyNodeColor, int fontColor) {
+    public void setGamma(int freeNodeColor, int busyNodeColor, int freeFontColor, int busyFontColor) {
 	    this.busyNodeColor = busyNodeColor;
 	    this.freeNodeColor = freeNodeColor;
-	    this.fontColor = fontColor;
+	    this.freeFontColor = freeFontColor;
+	    this.busyFontColor = busyFontColor;
     }
     
     // Устанавливаем размер
-    public void SetSize(int sizex, int sizey) throws Exception {
+    public void setSize(int sizex, int sizey) throws Exception {
 	    if (sizex % 2 == 0 || sizey % 2 == 0) {
 	    	Log.e("altavista", "Illegal size of gameGraph");
 	    	throw new Exception();
@@ -250,7 +254,7 @@ public class GameGraph {
     	for(int i = 0; i < sizey; i++)
     		for(int j = 0; j < sizex; j++) {
     			ret += Integer.toString(nodes.get(sizex * i + j).getType()) + "_";
-    			ret += nodes.get(sizex * i + j).toString() + "_";
+    			ret += Integer.toString(nodes.get(sizex * i + j).getData()) + "_";
     		};
     	for(int i = 0; i < rightpath.size(); i++)
     		ret += Integer.toString(rightpath.get(i)) + "_";
@@ -265,6 +269,7 @@ public class GameGraph {
     	try {
 	    	String[] strdata = str.split("_");
 	    	nodes.clear();
+	    	rightpath.clear();
 	    	path.clear();
 		    sizex = Integer.parseInt(strdata[0]);
 		    sizey = Integer.parseInt(strdata[1]);
@@ -298,13 +303,12 @@ public class GameGraph {
 		        }
 		    // Заполняем список правильного пути
 		    k += 1;
-		    for( int i = k; i < k + sizex + sizey; i++ ) {
+		    for( int i = 0; i < sizex + sizey - 1; i++ ) {
+		    	int p = Integer.parseInt(strdata[k]);
 		    	k += 1;
-		    	int p = Integer.parseInt(strdata[i]);
 		    	rightpath.add(p);
 		    }
 		    // Заполняем список пути
-		    k += 1;
 		    for( int i = k; i < strdata.length; i++ ) {
 		    	int p = Integer.parseInt(strdata[i]);
 		    	path.add(p);
