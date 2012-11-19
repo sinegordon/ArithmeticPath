@@ -24,6 +24,7 @@ public class MainActivity extends Activity implements OnClickListener {
         game = new Game(getApplicationContext());
         SelectGameActivity.setGame(game);
         UniversityActivity.setGame(game);
+        GameView.setGame(game);
         findViewById(R.id.StartButton).setOnClickListener(this);
         findViewById(R.id.SettingsButton).setOnClickListener(this);
         findViewById(R.id.RulesButton).setOnClickListener(this);

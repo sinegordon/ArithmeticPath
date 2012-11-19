@@ -1,23 +1,27 @@
 package com.arithmeticpath;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.RelativeLayout;
 
-public class UniversityActivity extends Activity implements OnClickListener, OnTouchListener {
+public class UniversityActivity extends Activity implements OnClickListener {
 
 	private static Game game = null;
-	
-	private SurfaceView gameview = null;
 	
 	public static void setGame(Game game) {
 		UniversityActivity.game = game;
 	}
+	
 	
 	@Override
 	public void onClick(View view) {
@@ -31,16 +35,20 @@ public class UniversityActivity extends Activity implements OnClickListener, OnT
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		try {
+			game.LoadGame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		super.onCreate(savedInstanceState);
         setContentView(R.layout.university);
-        gameview = (SurfaceView)findViewById(R.id.surfaceView1);
         findViewById(R.id.btn2).setOnClickListener(this);
+        ((GameView)findViewById(R.id.gameview)).setBackColor(Color.argb(0xff, 0x00, 0x99, 0xcc));
+        int freeNodeColor = Color.argb(0xff, 0x33, 0xb5, 0xe5);
+        int busyNodeColor = Color.argb(0xff, 0xff, 0xff, 0xff);
+        int freeFontColor = Color.argb(0xff, 0xff, 0xff, 0xff);
+        int busyFontColor = Color.argb(0xff, 0x33, 0xb5, 0xe5);
+		game.setGamma(freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
+
     }
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		
-		return false;
-	}
-
 }

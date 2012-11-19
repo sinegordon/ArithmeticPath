@@ -35,7 +35,7 @@ public class GameGraph {
 	    this.rightpath = new ArrayList<Integer>();
 	}
 	
-	// Конструктор с параметрами
+	// Конструктор с параметрами, создающий случайный граф
 	public GameGraph(int sizex, int sizey, int freeNodeColor, int busyNodeColor, int freeFontColor, int busyFontColor) throws Exception {
 		this.nodes = new ArrayList<GameNode>();
 	    this.path = new ArrayList<Integer>();
@@ -82,6 +82,7 @@ public class GameGraph {
 	            };
 
 	        }
+	    setRandomPath();
 	}
 	
     // Добавляем узел node
@@ -318,5 +319,40 @@ public class GameGraph {
     		Log.e("altavista", ex.getMessage());
     		throw ex;
     	}
+    }
+    
+    // Выбор и установка случайного пути в графе
+    public void setRandomPath() {
+	    rightpath.clear();
+	    int lastIndex = nodes.size() - 1;
+	    int index = 0;
+	    rightpath.add(index);
+	    int i = 0;
+	    int j = 0;
+	    while (index != lastIndex) {
+	        ArrayList<Integer> n = new ArrayList<Integer>();
+	        ArrayList<int[]> ind = new ArrayList<int[]>();
+	        if ((i + 1) < sizey) {
+	            n.add((i + 1) * sizex + j);            
+	            ind.add(new int[]{i + 1, j});
+	        }
+	        if ((j + 1) < sizex) {
+	            n.add(i * sizex + j + 1);
+	            ind.add(new int[]{i, j + 1});
+	        };
+	        if (n.size() == 1) {
+	            index = n.get(0);
+	            i = ind.get(0)[0];
+	            j = ind.get(0)[1];
+	        }
+	        if (n.size() == 2) {
+	            int who = Math.random() > 0.5 ? 1 : 0;
+	            index = n.get(who);
+	            i = ind.get(who)[0];
+	            j = ind.get(who)[1];
+	        };
+	        rightpath.add(index);
+	    }
+	    path.add(0);
     }
 }

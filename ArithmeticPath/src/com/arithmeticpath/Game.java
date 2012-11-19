@@ -110,7 +110,7 @@ public class Game {
         	lastDoneLevelIndex = -1;
         	currentLevel = -1;
         	if (game.equals(""))
-        		gameGraph = new GameGraph(3, 3, freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
+        		gameGraph = new GameGraph(5, 5, freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
         	else {
         		gameGraph.setGraph(game);
         		gameGraph.setGamma(freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
