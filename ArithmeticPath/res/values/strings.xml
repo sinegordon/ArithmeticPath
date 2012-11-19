@@ -3,4 +3,5 @@
     <string name="app_name">ArithmeticPath</string>
     <string name="title_activity_main">ArithmeticPath</string>
     <string name="prefs_name">ArithmeticPath</string>
+    <color name="skyblue">#0099cc</color>
 </resources>
