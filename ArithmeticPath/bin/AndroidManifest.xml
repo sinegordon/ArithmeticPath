@@ -12,13 +12,22 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="SelectGameActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name="UniversityActivity"
+            android:label="@string/title_activity_main" >
         </activity>
     </application>
 

@@ -19,12 +19,12 @@
     	android:gravity="center"
     	android:layout_marginTop="40dp">
         
-    <Button android:id="@+id/StartButton"       
+    <Button android:id="@+id/SchoolButton"       
         android:layout_height="151dp" 
         android:layout_width="253dp"  
         android:background="@drawable/school" />
 
-    <Button android:id="@+id/SettingsButton"     
+    <Button android:id="@+id/UniversityButton"     
         android:layout_height="151dp" 
         android:layout_width="253dp" 
         android:layout_marginTop="160dp"		
