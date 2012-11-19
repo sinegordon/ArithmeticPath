@@ -2,6 +2,7 @@ package com.arithmeticpath;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
@@ -26,17 +27,21 @@ public class GameGraph {
 	int freeFontColor = Color.argb(0, 0, 0, 0);
 	// Цвет шрифта занятого узла
 	int busyFontColor = Color.argb(0, 0, 0, 0);
+	// Контекст приложения
+	private Context context = null;
 	
 	
 	// Конструктор по умолчанию
-	public GameGraph() {
+	public GameGraph(Context context) {
 		this.nodes = new ArrayList<GameNode>();
 	    this.path = new ArrayList<Integer>();
 	    this.rightpath = new ArrayList<Integer>();
+	    this.context = context;
 	}
 	
 	// Конструктор с параметрами, создающий случайный граф
-	public GameGraph(int sizex, int sizey, int freeNodeColor, int busyNodeColor, int freeFontColor, int busyFontColor) throws Exception {
+	public GameGraph(Context context, int sizex, int sizey, int freeNodeColor, int busyNodeColor, int freeFontColor, int busyFontColor) throws Exception {
+	    this.context = context;
 		this.nodes = new ArrayList<GameNode>();
 	    this.path = new ArrayList<Integer>();
 	    this.rightpath = new ArrayList<Integer>();
@@ -66,7 +71,7 @@ public class GameGraph {
 	                int data = (int) (max * Math.random());
 	                while (data == 0)
 	                    data = (int) (max * Math.random());
-	                GameNode node = new GameNode(0, data, stepx / 2 + j * stepx, stepy / 2 + i * stepy);
+	                GameNode node = new GameNode(context, 0, data, stepx / 2 + j * stepx, stepy / 2 + i * stepy);
 		            node.setSizeX(width);
 		            node.setSizeY(height);
 		            addNode(node);
@@ -75,7 +80,7 @@ public class GameGraph {
 	                int type = (int)(3 * Math.random());
 	                while (type == 0)
 	                    type = (int)(3 * Math.random());
-	                GameNode node = new GameNode(type, 0, stepx / 2 + j * stepx, stepx / 2 + i * stepy);
+	                GameNode node = new GameNode(context, type, 0, stepx / 2 + j * stepx, stepx / 2 + i * stepy);
 		            node.setSizeX(width);
 		            node.setSizeY(height);
 		            addNode(node);
@@ -196,13 +201,14 @@ public class GameGraph {
     // Отрисовываем GameGraph на canvas
     public void draw(Canvas canvas) {
         // Рисуем узлы графа
-        for (int i = 0; i < this.nodes.size(); i++) {
+        for (int i = 0; i < this.nodes.size() - 1; i++) {
             if (inPath(i)) {
                 this.nodes.get(i).draw(canvas, this.busyNodeColor, this.busyFontColor);
             }
             else
                 this.nodes.get(i).draw(canvas, this.freeNodeColor, this.freeFontColor);
         }
+        this.nodes.get(this.nodes.size() - 1).draw(canvas, this.busyNodeColor, this.busyFontColor);
     }
 
     // Входит ли узел в путь
@@ -289,13 +295,13 @@ public class GameGraph {
 		        	k += 1;
 		        	int data = Integer.parseInt(strdata[k]);	        	
 		            if (type == 0) {
-		                GameNode node = new GameNode(0, data, stepx / 2 + j * stepx, stepy / 2 + i * stepy);
+		                GameNode node = new GameNode(context, 0, data, stepx / 2 + j * stepx, stepy / 2 + i * stepy);
 			            node.setSizeX(width);
 			            node.setSizeY(height);
 			            addNode(node);
 		            }
 		            else {
-		                GameNode node = new GameNode(type, 0, stepx / 2 + j * stepx, stepx / 2 + i * stepy);
+		                GameNode node = new GameNode(context, type, 0, stepx / 2 + j * stepx, stepx / 2 + i * stepy);
 			            node.setSizeX(width);
 			            node.setSizeY(height);
 			            addNode(node);

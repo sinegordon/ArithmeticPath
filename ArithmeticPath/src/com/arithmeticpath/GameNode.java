@@ -8,9 +8,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.content.Context;
 
 //Все координаты в долях высоты и ширины канвы (то есть от 0 до 1)
 public class GameNode {
+	// Контекст приложения
+	private Context context = null;
+	// Шрифт
+	Typeface typeface = null;
 	// Тип узла
 	// 0 - число
 	// 1 - сложение
@@ -90,14 +96,17 @@ public class GameNode {
 	    paint.setStyle(Paint.Style.FILL_AND_STROKE);
 	    paint.setStrokeWidth(5);
 	    paint.setColor(fontColor);
+	    paint.setTypeface(typeface);
 	    paint.setTextSize(h/2);
-	    canvas.drawText(this.toString(), xx - w/5, yy + h/5, paint);
+	    canvas.drawText(this.toString(), xx - w/6, yy + h/5, paint);
 	}
 	
-	public GameNode(int type, int data, double x, double y) {
+	public GameNode(Context context, int type, int data, double x, double y) {
 		this.type = type;
 		this.data = data;
 		this.x = x;
 		this.y = y;
+		this.context = context;
+		this.typeface = Typeface.createFromAsset(context.getAssets(), "fonts/PTC55F.ttf");
 	}
 }

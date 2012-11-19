@@ -73,7 +73,7 @@ public class Game {
         	String str = reslevels[i].substring(ind + 1);
         	levels.get(r).add(str);
         }
-        gameGraph = new GameGraph();
+        gameGraph = new GameGraph(context);
     }
     
     // Сохраняем игру (в кампании сохраняется текущий уровень)
@@ -110,7 +110,7 @@ public class Game {
         	lastDoneLevelIndex = -1;
         	currentLevel = -1;
         	if (game.equals(""))
-        		gameGraph = new GameGraph(5, 5, freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
+        		gameGraph = new GameGraph(context, 5, 5, freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
         	else {
         		gameGraph.setGraph(game);
         		gameGraph.setGamma(freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);

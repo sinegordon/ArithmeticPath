@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+
 public class GameView extends SurfaceView implements OnTouchListener, SurfaceHolder.Callback {
 		private static Game game = null;
 		
