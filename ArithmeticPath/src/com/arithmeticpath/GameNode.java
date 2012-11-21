@@ -94,7 +94,7 @@ public class GameNode {
 	    rect.set(xx - w / 2, yy - h / 2, xx + w / 2, yy + h / 2);
 	    canvas.drawRect(rect, paint);
 	    paint.setStyle(Paint.Style.FILL_AND_STROKE);
-	    paint.setStrokeWidth(5);
+	    //paint.setStrokeWidth(1);
 	    paint.setColor(fontColor);
 	    paint.setTypeface(typeface);
 	    paint.setTextSize(h/2);

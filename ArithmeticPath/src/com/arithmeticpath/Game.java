@@ -1,15 +1,12 @@
 package com.arithmeticpath;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.View;
 
 public class Game {
 	//  онтекст приложени€
@@ -60,13 +57,13 @@ public class Game {
     	String prefsName = res.getString(R.string.prefs_name);
         settings = context.getSharedPreferences(prefsName, 0);
         this.levels = new ArrayList<ArrayList<String>>();
-        // ќпредел€ем количество уровней сложности
+        // ќпредел€ем количество уровней школы
         int ind = reslevels[reslevels.length-1].indexOf("_");
         countRanges = Integer.parseInt(reslevels[reslevels.length-1].substring(0, ind)) + 1;
-        // —оздаем пустые массивы под игровые уровни на уровн€х сложности
+        // —оздаем пустые массивы под игровые уровни на уровн€х школы
         for (int i = 0; i < countRanges; i++)
         	levels.add(new ArrayList<String>());
-        // «аполн€ем массивы игровых уровней на уровн€х сложности
+        // «аполн€ем массивы игровых уровней на уровн€х школы
         for(int i = 0; i < reslevels.length; i++) {
         	ind = reslevels[i].indexOf("_");
         	int r = Integer.parseInt(reslevels[i].substring(0, ind));
@@ -118,7 +115,7 @@ public class Game {
         };
     }
        
-    // ”станавливаем текущий уровень сложности
+    // ”станавливаем текущий уровень школы
     public boolean setCurrentRange(int currentRange) {
     	if (currentRange < countRanges) {
     		this.currentRange = currentRange;
@@ -128,7 +125,7 @@ public class Game {
     		return false;
     }
     
-    // ”станавливаем текущий индекс игрового уровн€ на текущем уровне сложности
+    // ”станавливаем текущий индекс игрового уровн€ на текущем уровне школы
     public boolean setCurrentLevel(int currentLevel) {
     	if ( currentRange < levels.size() &&
     		 currentRange > -1 &&
@@ -140,12 +137,12 @@ public class Game {
     		return false;
     }
     
-    // ¬озвращаем текущий уровень сложности
+    // ¬озвращаем текущий уровень школы
     public int getCurrentRange() {
     	return currentRange;
     }
 
-    // ¬озвращаем текущий индекс игрового уровн€ на текущем уровене сложности
+    // ¬озвращаем текущий индекс игрового уровн€ на текущем уровене школы
     public int getCurrentLevel() {
     	return currentLevel;
     }
@@ -191,6 +188,16 @@ public class Game {
     // –езультат на данный момент на текущем игровом уровне
     public String nowResult() {
     	return gameGraph.toString();
+    }
+    
+    // ”станавливаем им€ пользовател€
+    public void setUserName(String userName) {
+    	this.userName = userName;
+    }
+    
+    // ¬озвращаем им€ пользовател€
+    public String getUserName() {
+    	return this.userName;
     }
 
 }
