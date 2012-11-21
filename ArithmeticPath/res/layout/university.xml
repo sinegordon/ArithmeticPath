@@ -3,19 +3,105 @@
     android:orientation="vertical"    
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/skyblue">    
+    android:background="@color/skyblue">   
+
+<!-- target and now elements -->    
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/btnwave"	    
+	    android:textSize="16sp" 	       	 
+	    android:layout_marginTop="15dp"       
+	    android:text="Target: +1926"
+	    android:textColor="#fff"/>
+	
+	<Button
+	    android:id="@+id/btnwave"	    
+	    android:layout_centerHorizontal="true"        
+	    android:layout_height="13dp"
+	    android:layout_width="77dp"
+	    android:layout_marginTop="20dp"                      
+	    android:background="@drawable/wave"/>
+	    
+	<TextView
+	    android:id="@+id/textView2"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/btnwave"		
+	    android:layout_marginTop="15dp"           
+	    android:text="now: +1674"
+	    android:textSize="16sp"
+	    android:textColor="#fff" />
+
+<!-- timer elements -->    	
+		
+	<Button  
+	    android:id="@+id/btntimer"		      
+	    android:layout_centerHorizontal="true" 
+        android:layout_below="@+id/btnwave"              		           
+	    android:layout_height="20dp"
+	    android:layout_width="24dp"                     
+	    android:background="@drawable/timer"/>	
+	    
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/btntimer"			
+        android:layout_below="@+id/btnwave"                
+	    android:text="1:34"
+	    android:textSize="16sp"
+	    android:textColor="#fff" />	
+
+<!-- game field -->    	
     
 	<RelativeLayout 
   		android:layout_width="match_parent"
     	android:layout_height="match_parent"
     	android:gravity="center"
-    	android:layout_marginTop="40dp">
+    	android:layout_marginLeft="10dp">
         
 		<com.arithmeticpath.GameView
 			android:id="@+id/gameview"
 			android:layout_width="300dp"
 			android:layout_height="300dp"/>
+		
+	<Button
+		android:id="@+id/btnsave"	      	      
+        android:layout_below="@+id/gameview"    	                  		           
+	    android:layout_height="50dp"
+	    android:layout_width="40dp"                     
+	    android:background="@drawable/save"/>
+	
+	<Button  	      
+        android:layout_below="@+id/gameview" 
+        android:layout_toRightOf="@+id/btnsave"	           	                  		           
+	    android:layout_height="50dp"
+	    android:layout_width="40dp"                     
+	    android:background="@drawable/leaderboard"/>
+	
+	<TextView
+		android:id="@+id/username"		    
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:layout_below="@+id/gameview" 
+		android:layout_alignParentRight="true"
+ 		android:layout_marginTop="15dp"	
+ 		android:layout_marginRight="15dp"	 			              	    
+	    android:textSize="20sp"    	 
+	    android:text="ingenious user" 
+	    android:textColor="#fff"/> 
+	    
+	<Button  	      
+        android:layout_below="@+id/gameview" 
+        android:layout_toLeftOf="@+id/username"	
+ 		android:layout_marginTop="17dp"	                   	                  		           
+	    android:layout_height="22dp"
+	    android:layout_width="22dp"                     
+	    android:background="@drawable/user"/>	    	
+						
 	</RelativeLayout>
+	
+	
 	
 	<RelativeLayout 
   		android:layout_width="match_parent"
