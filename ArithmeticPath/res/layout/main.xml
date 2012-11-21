@@ -33,6 +33,35 @@
         android:layout_width="220dp" 
         android:layout_marginTop="100dp"		
         android:background="@drawable/info"  />     
-  
 	</RelativeLayout>
+	
+	<TextView
+		android:id="@+id/username"		    
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"  			              	    
+	    android:textSize="20sp"
+        android:layout_marginBottom="50dp"		        	 
+	    android:text="ingenious user" 
+	    android:textColor="#fff"/> 
+	    
+	<TextView	    
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:layout_below="@+id/username"  
+	    android:layout_centerHorizontal="true"  			              	    
+	    android:textSize="13sp"
+        android:layout_marginTop="-50dp"		        	 
+	    android:text="tap to change username" 
+	    android:textColor="#33b5e5"/> 	
+	    
+	<Button  	      
+        android:layout_toLeftOf="@+id/username"	
+        android:layout_alignParentBottom="true"                          	                  		           
+	    android:layout_height="22dp"
+	    android:layout_width="29dp"
+        android:layout_marginBottom="50dp"		                         
+	    android:background="@drawable/user"/>	
+	
 </RelativeLayout>
