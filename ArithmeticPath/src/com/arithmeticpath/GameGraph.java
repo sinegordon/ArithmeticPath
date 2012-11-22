@@ -55,8 +55,6 @@ public class GameGraph {
 		    this.sizex = sizex;
 		    this.sizey = sizey;
 	    }
-	    // Добавляем в путь узел номер ноль (левый верхний)
-	    this.path.add(0);
 	    // Шаги
 	    double stepx = 1.0 / sizex;
 	    double stepy = 1.0 / sizey;

@@ -70,6 +70,9 @@ public class Game {
         	String str = reslevels[i].substring(ind + 1);
         	levels.get(r).add(str);
         }
+        // Задаем имя пользователя по умолчанию
+        userName = context.getResources().getString(R.string.default_user_name);
+        // Создаем объект игры
         gameGraph = new GameGraph(context);
     }
     
@@ -78,21 +81,21 @@ public class Game {
         SharedPreferences.Editor editor = settings.edit();
         if( currentRange < countRanges && currentRange > -1 && 
         	currentLevel < levels.get(currentRange).size() && currentLevel > -1) {
-        	editor.putString("game" + Integer.toString(currentRange), gameGraph.getGraph());
-        	editor.putInt("lastDoneLevelIndex" + Integer.toString(currentRange), currentLevel - 1);
-        	editor.putInt("currentLevel" + Integer.toString(currentRange), currentLevel);
+        	editor.putString(userName + "game" + Integer.toString(currentRange), gameGraph.getGraph());
+        	editor.putInt(userName + "lastDoneLevelIndex" + Integer.toString(currentRange), currentLevel - 1);
+        	editor.putInt(userName + "currentLevel" + Integer.toString(currentRange), currentLevel);
         };
         if( currentRange == -1)
-        	editor.putString("game", gameGraph.getGraph());
+        	editor.putString(userName + "game", gameGraph.getGraph());
         editor.commit();
     }
     
     // Загружаем игру (в кампании загружается текущий уровень)
     public void LoadGame() throws Exception {
         if( currentRange < countRanges && currentRange > -1 ) {   	
-        	String game = settings.getString("game" + Integer.toString(currentRange) , "");
-        	lastDoneLevelIndex = settings.getInt("lastDoneLevelIndex" + Integer.toString(currentRange) , -1);
-        	currentLevel = settings.getInt("currentLevel" + Integer.toString(currentRange) , -1);
+        	String game = settings.getString(userName + "game" + Integer.toString(currentRange) , "");
+        	lastDoneLevelIndex = settings.getInt(userName + "lastDoneLevelIndex" + Integer.toString(currentRange) , -1);
+        	currentLevel = settings.getInt(userName + "currentLevel" + Integer.toString(currentRange) , -1);
         	if (game.equals("")) {
         		currentLevel = 0;
         		String str = levels.get(currentRange).get(0);
@@ -103,7 +106,7 @@ public class Game {
         	gameGraph.setGamma(freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
         };
         if (currentRange == -1) {
-        	String game = settings.getString("game", "");
+        	String game = settings.getString(userName + "game", "");
         	lastDoneLevelIndex = -1;
         	currentLevel = -1;
         	if (game.equals(""))

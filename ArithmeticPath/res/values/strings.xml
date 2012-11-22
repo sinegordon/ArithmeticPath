@@ -4,4 +4,7 @@
     <string name="title_activity_main">ArithmeticPath</string>
     <string name="prefs_name">ArithmeticPath</string>
     <color name="skyblue">#0099cc</color>
+    <string name="target_text">target:</string>
+    <string name="now_text">now:</string>
+    <string name="default_user_name">ingenious user</string>
 </resources>

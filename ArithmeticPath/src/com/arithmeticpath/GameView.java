@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 
-public class GameView extends SurfaceView implements OnTouchListener, SurfaceHolder.Callback {
+public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		private static Game game = null;
 		
-		private int backColor = Color.argb(0xff, 0x00, 0x99, 0xcc);
+		private int backColor = 0;
 
 		public static void setGame(Game game) {
 			GameView.game = game;
@@ -23,7 +23,6 @@ public class GameView extends SurfaceView implements OnTouchListener, SurfaceHol
 		public GameView(final Context context) {
 			super(context);
             setFocusable(true);
-            setOnTouchListener(this);
             getHolder().addCallback(this);
             requestFocus();
         }
@@ -31,7 +30,6 @@ public class GameView extends SurfaceView implements OnTouchListener, SurfaceHol
 		public GameView(final Context context, final AttributeSet attrs) {
 	        super(context, attrs);
             setFocusable(true);
-            setOnTouchListener(this);
             getHolder().addCallback(this);
             requestFocus(); 
 	    }		
@@ -49,17 +47,6 @@ public class GameView extends SurfaceView implements OnTouchListener, SurfaceHol
 				this.getHolder().unlockCanvasAndPost(canvas);
 			}
 		}	
-
-		@Override
-		public boolean onTouch(View view, MotionEvent event) {
-			game.move(event.getX() / view.getWidth(), event.getY() / view.getHeight());
-			try {
-				draw();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return false;
-		}
 		
 		public void setBackColor(int backColor) {
 			this.backColor = backColor;

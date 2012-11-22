@@ -7,6 +7,7 @@
 
 <!-- target and now elements -->    
 	<TextView
+	    android:id="@+id/target"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/btnwave"	    
@@ -24,7 +25,7 @@
 	    android:background="@drawable/wave"/>
 	    
 	<TextView
-	    android:id="@+id/textView2"
+	    android:id="@+id/now"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/btnwave"		
