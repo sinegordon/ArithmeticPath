@@ -229,6 +229,7 @@ public class Game {
     		mastable[18] = userName;
     		int k = 10;// Текущее место
     		for(int i = 17; i > -1; i-=2) {
+    			// Если очередная запись больше нового результата - двигаем переставляем их местами
     			if(Double.parseDouble(mastable[i]) > result) {
     	    		mastable[i+2] = mastable[i];
     	    		mastable[i+1] = mastable[i-1];    				
@@ -236,7 +237,16 @@ public class Game {
     	    		mastable[i-1] = userName;
     	    		k -= 1;
     			}
+    			// Если нет - сохраняем статистику и выходим
     			else {
+    				table = "";
+    	    		for(int j = 0; j < 19; j++) {
+   	    				table += mastable[j] + "_";
+    	    		}
+    	    		table += mastable[19];
+    				SharedPreferences.Editor editor = settings.edit();
+    	        	editor.putString(Integer.toString(sizex) + "_" + Integer.toString(sizey) + "_records", table);
+    	            editor.commit();
     				return k;
     			}
     		}
