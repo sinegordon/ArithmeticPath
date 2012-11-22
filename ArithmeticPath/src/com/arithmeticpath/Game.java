@@ -12,18 +12,18 @@ public class Game {
 	// Контекст приложения
 	private Context context = null; 
 	
-	// Игровой объект
+	// Объект игрового графа
 	private GameGraph gameGraph = null;
 	
-	// Количество уровней сложности в кампании
+	// Количество уровней школы в кампании
 	private int countRanges = 0;
 	
 	//Индекс последнего пройденного в текущей кампании уровня 
 	private int lastDoneLevelIndex = -1;
 	
-	// Массив уровней в кампаниях по рангам сложностей (длина массива countRanges)
+	// Массив уровней в кампаниях по рангам школы (длина массива countRanges)
 	private ArrayList<ArrayList<String>> levels = null;
-	
+		
 	// Имя пользователя
 	private String userName = "";
 	
@@ -200,7 +200,48 @@ public class Game {
     
     // Возвращаем имя пользователя
     public String getUserName() {
-    	return this.userName;
+    	return userName;
+    }
+    
+    // Обновить статистику игры с размером доски sizex на sizey, именем пользователя userName и
+    // результатом result секунд
+    // Возвращает место в топ 10 (0, если не вошла)
+    public int updateStatistics(int sizex, int sizey, double result) {
+    	String table = settings.getString(Integer.toString(sizex) + "_" + Integer.toString(sizey) + "_records" , "");
+    	String[] mastable = table.split("_");
+    	// Если таблица на данный размер заполняется впервые - создаем ее
+    	if(mastable.length == 0) {
+    		mastable = new String[20];
+    		for(int i = 0; i < 20; i++) {
+    			if (i % 2 == 0)
+    				mastable[i] = "John/Jane Doe";
+    			else
+    				mastable[i] = "1000000.000";
+    		}
+    	}
+    	// Ищем надо ли вставить новый результат
+    	// Если он хуже худшего - выходим
+    	if(Double.parseDouble(mastable[19]) < result)
+    		return 0;
+    	else {
+    		//  Иначе начинаем цикл сдвига с конца пока не найдем меньшую данного результата запись
+    		mastable[19] = Double.toString(result);
+    		mastable[18] = userName;
+    		int k = 10;// Текущее место
+    		for(int i = 17; i > -1; i-=2) {
+    			if(Double.parseDouble(mastable[i]) > result) {
+    	    		mastable[i+2] = mastable[i];
+    	    		mastable[i+1] = mastable[i-1];    				
+    	    		mastable[i] = Double.toString(result);
+    	    		mastable[i-1] = userName;
+    	    		k -= 1;
+    			}
+    			else {
+    				return k;
+    			}
+    		}
+    	}    		
+    	return 0;
     }
 
 }

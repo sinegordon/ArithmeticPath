@@ -359,4 +359,14 @@ public class GameGraph {
 	    }
 	    path.add(0);
     }
+    
+    // Возвращаем размер по X доски (в фишках)
+    public int getSizeX() {
+    	return sizex;
+    }
+    
+    // Возвращаем размер по Y доски (в фишках)
+    public int getSizeY() {
+    	return sizey;
+    }
 }

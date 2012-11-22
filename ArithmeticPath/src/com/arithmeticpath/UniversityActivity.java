@@ -1,5 +1,8 @@
 package com.arithmeticpath;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +21,30 @@ import android.widget.TextView;
 public class UniversityActivity extends Activity implements OnTouchListener, OnClickListener {
 
 	private static Game game = null;
+	
+	// Секция таймера
+	private Timer timer = new Timer();
+	private class UITimerTask extends TimerTask {
+		private long startTime = System.currentTimeMillis();
+		// Возвращаем время в секундах от запуска таймера
+		public double getTime() {
+			long currentTime = System.currentTimeMillis();
+			return (currentTime - startTime)/1000d;
+		}
+        @Override
+        public void run() {
+            UniversityActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                	long currentTime = System.currentTimeMillis();
+                	String timeStr = Double.toString((currentTime - startTime)/1000d);
+                	int dotIndex = timeStr.indexOf(".");
+                	((TextView)findViewById(R.id.timertext)).setText(timeStr.subSequence(0, dotIndex+2));
+                }
+            });
+        }
+   };
+   // Конец таймера
 	
 	public static void setGame(Game game) {
 		UniversityActivity.game = game;
@@ -55,6 +82,7 @@ public class UniversityActivity extends Activity implements OnTouchListener, OnC
         int freeFontColor = Color.argb(0xff, 0xff, 0xff, 0xff);
         int busyFontColor = Color.argb(0xff, 0x33, 0xb5, 0xe5);
 		game.setGamma(freeNodeColor, busyNodeColor, freeFontColor, busyFontColor);
+		timer.schedule(new UITimerTask(), 0, 100);
     }
 
 
