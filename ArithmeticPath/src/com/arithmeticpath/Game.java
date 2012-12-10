@@ -57,13 +57,13 @@ public class Game {
     	String prefsName = res.getString(R.string.prefs_name);
         settings = context.getSharedPreferences(prefsName, 0);
         this.levels = new ArrayList<ArrayList<String>>();
-        // ќпредел€ем количество уровней школы
+        // ќпредел€ем количество уровней кампании
         int ind = reslevels[reslevels.length-1].indexOf("_");
         countRanges = Integer.parseInt(reslevels[reslevels.length-1].substring(0, ind)) + 1;
-        // —оздаем пустые массивы под игровые уровни на уровн€х школы
+        // —оздаем пустые массивы под игровые уровни на уровн€х кампании
         for (int i = 0; i < countRanges; i++)
         	levels.add(new ArrayList<String>());
-        // «аполн€ем массивы игровых уровней на уровн€х школы
+        // «аполн€ем массивы игровых уровней на уровн€х кампании
         for(int i = 0; i < reslevels.length; i++) {
         	ind = reslevels[i].indexOf("_");
         	int r = Integer.parseInt(reslevels[i].substring(0, ind));
@@ -118,7 +118,7 @@ public class Game {
         };
     }
        
-    // ”станавливаем текущий уровень школы
+    // ”станавливаем текущий уровень кампании
     public boolean setCurrentRange(int currentRange) {
     	if (currentRange < countRanges) {
     		this.currentRange = currentRange;
@@ -128,7 +128,7 @@ public class Game {
     		return false;
     }
     
-    // ”станавливаем текущий индекс игрового уровн€ на текущем уровне школы
+    // ”станавливаем текущий индекс игрового уровн€ на текущем уровне кампании
     public boolean setCurrentLevel(int currentLevel) {
     	if ( currentRange < levels.size() &&
     		 currentRange > -1 &&
@@ -140,12 +140,12 @@ public class Game {
     		return false;
     }
     
-    // ¬озвращаем текущий уровень школы
+    // ¬озвращаем текущий уровень кампании
     public int getCurrentRange() {
     	return currentRange;
     }
 
-    // ¬озвращаем текущий индекс игрового уровн€ на текущем уровене школы
+    // ¬озвращаем текущий индекс игрового уровн€ на текущем уровене кампании
     public int getCurrentLevel() {
     	return currentLevel;
     }
